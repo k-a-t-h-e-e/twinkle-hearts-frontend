@@ -1,13 +1,64 @@
-import React, { Fragment } from "react";
-import { Link, useLocation } from "react-router-dom"; 
+import React, { Fragment, useState, useEffect} from "react";
+import { Link, useLocation,useNavigate } from "react-router-dom"; 
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
+import { useDispatch, useSelector } from 'react-redux';
+
+import { registerUser,userLogin } from '../../store/actions/authActions';
 
 const LoginRegister = () => {
   let { pathname } = useLocation();
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  )
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+      // Define state for the form data
+      const [formData, setFormData] = useState({
+        username: '',
+        userpassword: '',
+        useremail: '',
+        confirmUserpassword:'',
+      });
+    
+      useEffect(() => {
+        if (userInfo) {
+          navigate('/')
+        }
+      }, [navigate, userInfo]);
+      
+
+  const { username, userpassword,confirmUserpassword, useremail } = formData;
+
+  const handleInputChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+  } 
+
+    const handleLogin = (event) => {
+      event.preventDefault();
+      dispatch(userLogin({ username, userpassword }));
+    }
+  
+    const handleRegister = (event) => {
+      event.preventDefault();
+      // Handle registration logic here
+      console.log("USER DETAILS",formData)
+      if (userpassword !== confirmUserpassword) {
+        alert('Password mismatch')
+      } else {
+        dispatch(registerUser({ username:username, password:userpassword,passwordRepeat:confirmUserpassword,email:useremail }));
+      }
+    }
+    
+  
+
 
   return (
     <Fragment>
@@ -45,16 +96,18 @@ const LoginRegister = () => {
                       <Tab.Pane eventKey="login">
                         <div className="login-form-container">
                           <div className="login-register-form">
-                            <form>
+                            <form onSubmit={handleLogin}>
                               <input
                                 type="text"
-                                name="user-name"
+                                name="username"
                                 placeholder="Username"
+                                onChange={handleInputChange}
                               />
                               <input
                                 type="password"
-                                name="user-password"
+                                name="userpassword"
                                 placeholder="Password"
+                                onChange={handleInputChange}
                               />
                               <div className="button-box">
                                 <div className="login-toggle-btn">
@@ -75,21 +128,30 @@ const LoginRegister = () => {
                       <Tab.Pane eventKey="register">
                         <div className="login-form-container">
                           <div className="login-register-form">
-                            <form>
+                            <form onSubmit={handleRegister}>
                               <input
                                 type="text"
-                                name="user-name"
+                                name="username"
                                 placeholder="Username"
+                                onChange={handleInputChange}
                               />
                               <input
                                 type="password"
-                                name="user-password"
+                                name="userpassword"
                                 placeholder="Password"
+                                onChange={handleInputChange}
+                              />
+                                 <input
+                                type="password"
+                                name="confirmUserpassword"
+                                placeholder="Confirm Password"
+                                onChange={handleInputChange}
                               />
                               <input
-                                name="user-email"
+                                name="useremail"
                                 placeholder="Email"
                                 type="email"
+                                onChange={handleInputChange}
                               />
                               <div className="button-box">
                                 <button type="submit">

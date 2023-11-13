@@ -1,12 +1,29 @@
-import { Fragment } from "react"; 
+import { Fragment, useEffect } from "react"; 
 import { useLocation } from "react-router-dom"; 
 import Accordion from "react-bootstrap/Accordion";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetUserDetailsQuery } from "../../store/services/authService";
+import { setCredentials, logout} from "../../store/slices/auth-slice";
 const MyAccount = () => {
   let { pathname } = useLocation();
+
+  const { userDetails,userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
+    pollingInterval: 100000, // 15mins
+  });
+  
+
+  useEffect(() => {
+    if(isFetching)
+    if (data && Object.keys(data).length > 0) {
+      dispatch(setCredentials(data));
+      console.log("USE EFFECT IS TRIGGERERED")
+    }
+  }, [data, dispatch])
 
   return (
     <Fragment>
@@ -22,6 +39,8 @@ const MyAccount = () => {
             {label: "My Account", path: process.env.PUBLIC_URL + pathname }
           ]} 
         />
+      
+   
         
         <div className="myaccount-area pb-80 pt-100">
           <div className="container">
@@ -43,25 +62,25 @@ const MyAccount = () => {
                               <div className="col-lg-6 col-md-6">
                                 <div className="billing-info">
                                   <label>First Name</label>
-                                  <input type="text" />
+                                  <input type="text" value={userDetails.firstName} readOnly />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6">
                                 <div className="billing-info">
                                   <label>Last Name</label>
-                                  <input type="text" />
+                                  <input type="text" value={userDetails.lastName} readOnly />
                                 </div>
                               </div>
                               <div className="col-lg-12 col-md-12">
                                 <div className="billing-info">
                                   <label>Email Address</label>
-                                  <input type="email" />
+                                  <input type="email" value={userDetails.email} readOnly />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6">
                                 <div className="billing-info">
                                   <label>Telephone</label>
-                                  <input type="text" />
+                                  <input type="text" value={userDetails.phone} readOnly />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6">
@@ -127,6 +146,7 @@ const MyAccount = () => {
                               <div className="row">
                                 <div className="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
                                   <div className="entries-info text-center">
+            
                                     <p>John Doe</p>
                                     <p>Paul Park </p>
                                     <p>Lorem ipsum dolor set amet</p>

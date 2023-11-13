@@ -15,6 +15,8 @@ import currencyReducer from "./slices/currency-slice";
 import cartReducer from "./slices/cart-slice";
 import compareReducer from "./slices/compare-slice";
 import wishlistReducer from "./slices/wishlist-slice";
+import authReducer from "./slices/auth-slice";
+import { authApi } from './services/authService';
 
 const persistConfig = {
     key: "flone",
@@ -23,13 +25,17 @@ const persistConfig = {
     blacklist: ["product"]
 }
 
+
 export const rootReducer = combineReducers({
     product: productReducer,
     currency: currencyReducer,
     cart: cartReducer,
     compare: compareReducer,
-    wishlist: wishlistReducer
+    wishlist: wishlistReducer,
+    auth: authReducer,
+    [authApi.reducerPath]: authApi.reducer,
 });
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -47,7 +53,7 @@ export const store = configureStore({
                     REGISTER,
                 ],
             },
-        }),
+        }).concat(authApi.middleware),
 });
 
 export const persistor = persistStore(store);

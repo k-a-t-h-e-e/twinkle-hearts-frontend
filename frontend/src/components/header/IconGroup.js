@@ -1,19 +1,33 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link,useNavigate } from "react-router-dom";
+import { useSelector,useDispatch} from "react-redux";
 import clsx from "clsx";
 import MenuCart from "./sub-components/MenuCart";
+import { setCredentials, logout} from "../../store/slices/auth-slice";
 
 const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
     e.currentTarget.nextSibling.classList.toggle("active");
   };
 
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
   const triggerMobileMenu = () => {
     const offcanvasMobileMenu = document.querySelector(
       "#offcanvas-mobile-menu"
     );
     offcanvasMobileMenu.classList.add("active");
+  };
+  const handleLogout = () => {
+    dispatch(logout());
+    
+    setTimeout(() => {
+      // Redirect to the home page (or any other desired destination)
+      navigate('/');
+    }, 1000);
   };
   const { compareItems } = useSelector((state) => state.compare);
   const { wishlistItems } = useSelector((state) => state.wishlist);
@@ -43,7 +57,23 @@ const IconGroup = ({ iconWhiteClass }) => {
         </button>
         <div className="account-dropdown">
           <ul>
-            <li>
+           
+            
+            {userInfo ? (<>
+              <li>
+                <Link to={process.env.PUBLIC_URL + "/my-account"}>
+                my account
+                </Link>
+                </li>
+                <li>
+                <Link to={process.env.PUBLIC_URL + "/log-out"} onClick={handleLogout}>
+                log out
+                </Link>
+                   </li>
+                   </>
+                 ) : (
+                  <>
+                  <li>
               <Link to={process.env.PUBLIC_URL + "/login-register"}>Login</Link>
             </li>
             <li>
@@ -51,11 +81,8 @@ const IconGroup = ({ iconWhiteClass }) => {
                 Register
               </Link>
             </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/my-account"}>
-                my account
-              </Link>
-            </li>
+            </>
+                  )}
           </ul>
         </div>
       </div>

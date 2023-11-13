@@ -1,10 +1,29 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setCredentials, logout} from "../../store/slices/auth-slice";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import { useGetUserDetailsQuery } from "../../store/services/authService"
+import { Button } from "react-bootstrap";
 
 const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
   const { t } = useTranslation();
+   
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // automatically authenticate user if token is found
+  const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
+    pollingInterval: 900000, // 15mins
+  })
+
+  useEffect(() => {
+    if (data) dispatch(setCredentials(data))
+  }, [data, dispatch])
+
+
   
   return (
     <div
@@ -436,11 +455,26 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
                 <Link to={process.env.PUBLIC_URL + "/my-account"}>
                   {t("my_account")}
                 </Link>
-              </li>
-              <li>
-                <Link to={process.env.PUBLIC_URL + "/login-register"}>
+                {userInfo ? (
+                 <Link to={process.env.PUBLIC_URL + "/logout"}>
+                 {t("logout")}
+               </Link>
+                 ) : (
+                  <Link to={process.env.PUBLIC_URL + "/login-register"}>
                   {t("login_register")}
                 </Link>
+                  )}
+              </li>
+              <li>{console.log("USER INFO IN NAV ",userInfo)}
+              {userInfo ? (
+                 <Link to={process.env.PUBLIC_URL + "/logout"}>
+                 {t("logout")}
+               </Link>
+                 ) : (
+                  <Link to={process.env.PUBLIC_URL + "/login-register"}>
+                  {t("login_register")}
+                </Link>
+                  )}
               </li>
               <li>
                 <Link to={process.env.PUBLIC_URL + "/about"}>
