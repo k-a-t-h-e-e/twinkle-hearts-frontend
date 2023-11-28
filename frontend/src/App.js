@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const HomeFashion = lazy(() => import("./pages/home/HomeFashion"));
 const HomeFashionTwo = lazy(() => import("./pages/home/HomeFashionTwo"));
 const HomeFashionThree = lazy(() => import("./pages/home/HomeFashionThree"));
-const HomeFashionFour = lazy(() => import("./pages/home/HomeFashionFour"));
+const MainHome = lazy(() => import("./pages/home/MainHome"));
 const HomeFashionFive = lazy(() => import("./pages/home/HomeFashionFive"));
 const HomeFashionSix = lazy(() => import("./pages/home/HomeFashionSix"));
 const HomeFashionSeven = lazy(() => import("./pages/home/HomeFashionSeven"));
@@ -121,10 +121,11 @@ const App = () => {
             <Routes>
               <Route
                 path={process.env.PUBLIC_URL + "/"}
-                element={<HomeFashion/>}
+                element={<MainHome/>}
               />
 
               {/* Homepages */}
+              {/*
               <Route
                 path={process.env.PUBLIC_URL + "/home-fashion"}
                 element={<HomeFashion/>}
@@ -139,7 +140,7 @@ const App = () => {
               />
               <Route
                 path={process.env.PUBLIC_URL + "/home-fashion-four"}
-                element={<HomeFashionFour/>}
+                element={<MainHome/>}
               />
               <Route
                 path={process.env.PUBLIC_URL + "/home-fashion-five"}
@@ -277,7 +278,7 @@ const App = () => {
                 path={process.env.PUBLIC_URL + "/home-valentines-day"}
                 element={<HomeValentinesDay/>}
               />
-
+    */}
               {/* Shop pages */}
               <Route
                 path={process.env.PUBLIC_URL + "/shop-grid-standard"}

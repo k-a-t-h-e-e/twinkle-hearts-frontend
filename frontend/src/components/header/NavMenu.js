@@ -1,51 +1,54 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials, logout} from "../../store/slices/auth-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials, logout } from "../../store/slices/auth-slice";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { useGetUserDetailsQuery } from "../../store/services/authService"
+import { useGetUserDetailsQuery } from "../../store/services/authService";
 import { Button } from "react-bootstrap";
 
 const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
   const { t } = useTranslation();
-   
+
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // automatically authenticate user if token is found
-  const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
+  const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
     pollingInterval: 900000, // 15mins
-  })
+  });
 
   useEffect(() => {
-    if (data) dispatch(setCredentials(data))
-  }, [data, dispatch])
+    if (data) dispatch(setCredentials(data));
+  }, [data, dispatch]);
 
-
-  
   return (
     <div
-      className={clsx(sidebarMenu
+      className={clsx(
+        sidebarMenu
           ? "sidebar-menu"
-          : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`)}
+          : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`
+      )}
     >
       <nav>
         <ul>
           <li>
             <Link to={process.env.PUBLIC_URL + "/"}>
               {t("home")}
-              {sidebarMenu ? (
+              {/* {sidebarMenu ? (
                 <span>
                   <i className="fa fa-angle-right"></i>
                 </span>
               ) : (
                 <i className="fa fa-angle-down" />
-              )}
+              )} */}
             </Link>
+            {/*
             <ul className="mega-menu mega-menu-padding">
+             
               <li>
+                
                 <ul>
                   <li className="mega-menu-title">
                     <Link to={process.env.PUBLIC_URL + "/"}>
@@ -270,20 +273,24 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
                   </li>
                 </ul>
               </li>
+              
             </ul>
+            */}
           </li>
+
           <li>
-            <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
+            <Link to={process.env.PUBLIC_URL + "/shop-grid-filter"}>
               {" "}
               {t("shop")}
-              {sidebarMenu ? (
+              {/* {sidebarMenu ? (
                 <span>
                   <i className="fa fa-angle-right"></i>
                 </span>
               ) : (
                 <i className="fa fa-angle-down" />
-              )}
+              )} */}
             </Link>
+            {/* 
             <ul className="mega-menu">
               <li>
                 <ul>
@@ -413,12 +420,13 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
                 </ul>
               </li>
             </ul>
+            */}
           </li>
-          <li>
+          {/* <li>
             <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
               {t("collection")}
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to={process.env.PUBLIC_URL + "/"}>
               {t("pages")}
@@ -432,9 +440,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
             </Link>
             <ul className="submenu">
               <li>
-                <Link to={process.env.PUBLIC_URL + "/cart"}>
-                  {t("cart")}
-                </Link>
+                <Link to={process.env.PUBLIC_URL + "/cart"}>{t("cart")}</Link>
               </li>
               <li>
                 <Link to={process.env.PUBLIC_URL + "/checkout"}>
@@ -451,31 +457,28 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
                   {t("compare")}
                 </Link>
               </li>
-              <li>
-                <Link to={process.env.PUBLIC_URL + "/my-account"}>
-                  {t("my_account")}
-                </Link>
-                {userInfo ? (
-                 <Link to={process.env.PUBLIC_URL + "/logout"}>
-                 {t("logout")}
-               </Link>
-                 ) : (
-                  <Link to={process.env.PUBLIC_URL + "/login-register"}>
-                  {t("login_register")}
-                </Link>
-                  )}
-              </li>
-              <li>{console.log("USER INFO IN NAV ",userInfo)}
+
               {userInfo ? (
-                 <Link to={process.env.PUBLIC_URL + "/logout"}>
-                 {t("logout")}
-               </Link>
-                 ) : (
+                <>
+                  <li>
+                    <Link to={process.env.PUBLIC_URL + "/my-account"}>
+                      {t("my_account")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={process.env.PUBLIC_URL + "/logout"}>
+                      {t("logout")}
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li>
                   <Link to={process.env.PUBLIC_URL + "/login-register"}>
-                  {t("login_register")}
-                </Link>
-                  )}
-              </li>
+                    {t("login_register")}
+                  </Link>
+                </li>
+              )}
+
               <li>
                 <Link to={process.env.PUBLIC_URL + "/about"}>
                   {t("about_us")}

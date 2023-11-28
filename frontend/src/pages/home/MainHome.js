@@ -19,7 +19,7 @@ const HomeFashionFour = () => {
         <ProductGridFiveContainer
           spaceTopClass="pt-100"
           spaceBottomClass="pb-100"
-          category="accessories"
+          category="Greeting card"
         />
         {/* newsletter */}
         <NewsletterTwo spaceBottomClass="pb-100" />

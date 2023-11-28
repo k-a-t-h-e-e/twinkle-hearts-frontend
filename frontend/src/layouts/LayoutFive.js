@@ -14,7 +14,7 @@ const LayoutFive = ({ children }) => {
         footerTopBackgroundColorClass="bg-black"
         footerTopSpaceTopClass="pt-80"
         spaceBottomClass="pb-25"
-        footerLogo="/assets/img/logo/logo-2.png"
+        footerLogo="/assets/img/logo/1 card tag-02.png"
       />
       <ScrollToTop/>
     </div>

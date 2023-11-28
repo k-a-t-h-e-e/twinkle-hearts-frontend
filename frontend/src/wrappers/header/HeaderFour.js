@@ -35,7 +35,7 @@ const HeaderFour = () => {
           <div className="col-xl-2 col-lg-2 col-md-6 col-4">
             <div className="logo text-center logo-hm5">
               <Link className="sticky-none" to={process.env.PUBLIC_URL + "/"}>
-                <img alt="" src="assets/img/logo/logo-2.png" />
+                <img alt="" src="assets/img/logo/logo.png" />
               </Link>
               <Link className="sticky-block" to={process.env.PUBLIC_URL + "/"}>
                 <img alt="" src="assets/img/logo/logo.png" />
